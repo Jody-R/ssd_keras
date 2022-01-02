@@ -462,6 +462,7 @@ class DataGenerator:
 
         for images_dir, image_set_filename, annotations_dir in zip(images_dirs, image_set_filenames, annotations_dirs):
             # Read the image set file that so that we know all the IDs of all the images to be included in the dataset.
+
             with open(image_set_filename) as f:
                 image_ids = [line.strip() for line in f] # Note: These are strings, not integers.
                 self.image_ids += image_ids
@@ -472,13 +473,13 @@ class DataGenerator:
             # Loop over all images in this dataset.
             for image_id in it:
 
-                filename = '{}'.format(image_id) + '.jpg'
+                filename = '{}'.format(image_id) + '.png'
                 self.filenames.append(os.path.join(images_dir, filename))
 
                 if not annotations_dir is None:
                     # Parse the XML file for this image.
                     with open(os.path.join(annotations_dir, image_id + '.xml')) as f:
-                        soup = BeautifulSoup(f, 'xml')
+                        soup = BeautifulSoup(f, 'lxml')
 
                     folder = soup.folder.text # In case we want to return the folder in addition to the image file name. Relevant for determining which dataset an image belongs to.
                     #filename = soup.filename.text
